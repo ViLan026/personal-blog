@@ -1,0 +1,366 @@
+@import "tailwindcss";
+
+/*
+ * STRICT THREE-COLOUR DESIGN SYSTEM
+ * Background #F6F9FC · Primary #710014 · Text #000000
+ * Nothing else is allowed: no greys, gradients, opacity tints or coloured shadows.
+ */
+:root {
+  --background: #f6f9fc;
+  --primary: #710014;
+  --text: #000000;
+}
+
+/* Remove every default Tailwind colour and shadow so only the palette below exists. */
+@theme {
+  --color-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-primary: var(--primary);
+  --color-ink: var(--text);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Noto Sans Vietnamese", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+@layer base {
+  html {
+    background: var(--background);
+    color: var(--text);
+    /* Always light: stops dark-mode browsers from painting native controls,
+       dialogs and scrollbars in greys that are not part of the palette. */
+    color-scheme: light;
+    /* Scrollbars (page, tables, code blocks) use the palette too. */
+    scrollbar-color: var(--primary) var(--background);
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* The browser's grey "clear" cross in search fields is not in the palette. */
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    /* Safety net only; layouts are built so nothing should overflow. */
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: var(--background);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  a {
+    text-underline-offset: 3px;
+  }
+
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 border-2 border-primary bg-primary px-5 py-2 text-center font-semibold text-background;
+  }
+  .btn:hover:not(:disabled) {
+    @apply bg-background text-primary;
+  }
+  .btn-outline {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 border-2 border-primary bg-transparent px-5 py-2 text-center font-semibold text-primary;
+  }
+  .btn-outline:hover:not(:disabled) {
+    @apply bg-primary text-background;
+  }
+  /* Compact buttons keep a 44px touch target below 1280px (phones and tablets)
+     and shrink only where a mouse is the usual input. */
+  .btn-sm {
+    @apply min-h-11 px-3 py-1 text-sm xl:min-h-9;
+  }
+
+  /* Form controls */
+  .field {
+    @apply block min-h-11 w-full border-2 border-ink bg-background px-3 py-2 text-ink;
+  }
+  .field:focus {
+    @apply border-primary outline-none;
+    box-shadow: inset 0 0 0 1px var(--primary);
+  }
+  .field[aria-invalid="true"] {
+    @apply border-primary;
+    border-style: dashed;
+  }
+  .label {
+    @apply mb-1 block font-semibold;
+  }
+  .hint {
+    @apply mt-1 text-sm;
+  }
+
+  /* Messages. Meaning is carried by the bold prefix ("Error:" / "Done:") and by
+     fill vs outline, never by colour alone. */
+  .alert-error {
+    @apply border-2 border-primary bg-primary px-4 py-3 text-background;
+  }
+  .alert-ok {
+    @apply border-2 border-ink bg-background px-4 py-3 text-ink;
+  }
+  .field-error {
+    @apply mt-1 text-sm font-semibold text-primary;
+  }
+
+  /* Layout helpers */
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .section-title {
+    @apply mb-8 border-l-4 border-primary pl-4 text-2xl font-bold tracking-tight md:text-3xl;
+  }
+  .link {
+    @apply font-medium text-primary underline;
+  }
+  .link:hover {
+    @apply bg-primary text-background no-underline;
+  }
+  /* Stand-alone text links (footer, breadcrumbs, contents) get a 44px-tall hit
+     area on touch devices without changing how they look. */
+  .link-target {
+    @apply inline-flex min-h-11 items-center xl:min-h-0;
+  }
+  .tag {
+    @apply inline-block border border-primary px-2 py-0.5 text-sm font-medium text-primary;
+  }
+  .tag-solid {
+    @apply inline-block border border-primary bg-primary px-2 py-0.5 text-sm font-medium text-background;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Rendered Markdown (react-markdown). Palette-only, no syntax colours. */
+/* ------------------------------------------------------------------ */
+.md {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.md > :first-child {
+  margin-top: 0;
+}
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 2em 0 0.6em;
+  scroll-margin-top: 5rem;
+}
+.md h1 {
+  font-size: 2rem;
+}
+.md h2 {
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.3em;
+}
+.md h3 {
+  font-size: 1.25rem;
+}
+.md h4 {
+  font-size: 1.0625rem;
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-underline-offset: 4px;
+}
+.md p {
+  margin: 1em 0;
+}
+.md a {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.md a:hover {
+  background: var(--primary);
+  color: var(--background);
+  text-decoration: none;
+}
+.md ul,
+.md ol {
+  margin: 1em 0;
+  padding-left: 1.6rem;
+}
+.md ul {
+  list-style: disc;
+}
+.md ol {
+  list-style: decimal;
+}
+.md li {
+  margin: 0.35em 0;
+}
+.md li::marker {
+  color: var(--primary);
+}
+.md ul.contains-task-list {
+  list-style: none;
+  padding-left: 0.25rem;
+}
+/* Task-list checkboxes are always disabled, and browsers repaint disabled
+   native checkboxes in grey. Draw them ourselves so they stay on palette. */
+.md .task-list-item input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  margin-right: 0.6rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  vertical-align: -0.2rem;
+  border: 2px solid var(--text);
+  background: var(--background);
+  opacity: 1;
+}
+.md .task-list-item input[type="checkbox"]:checked {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+.md .task-list-item input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 0.28rem;
+  top: 0.02rem;
+  width: 0.28rem;
+  height: 0.58rem;
+  border: solid var(--background);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.md blockquote {
+  border-left: 4px solid var(--primary);
+  margin: 1.25em 0;
+  padding: 0.25rem 0 0.25rem 1rem;
+  font-style: italic;
+}
+.md blockquote > :first-child {
+  margin-top: 0;
+}
+.md blockquote > :last-child {
+  margin-bottom: 0;
+}
+.md hr {
+  border: 0;
+  border-top: 2px solid var(--primary);
+  margin: 2em 0;
+}
+.md :not(pre) > code {
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.05em 0.35em;
+  overflow-wrap: anywhere;
+}
+.md pre {
+  background: var(--text);
+  color: var(--background);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin: 1.25em 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-wrap: normal;
+  padding: 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+/* Fenced code: optional language tab (primary) above a black block. */
+.md .code-block {
+  margin: 1.25em 0;
+  max-width: 100%;
+}
+.md .code-block pre {
+  margin: 0;
+}
+.md .code-lang {
+  background: var(--primary);
+  color: var(--background);
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.6rem;
+  text-transform: uppercase;
+}
+.md pre code {
+  background: none;
+  border: 0;
+  color: inherit;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  padding: 0;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+.md .table-wrap {
+  margin: 1.25em 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-wrap: normal;
+  -webkit-overflow-scrolling: touch;
+}
+.md table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+.md th,
+.md td {
+  border: 1px solid var(--text);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.md th {
+  background: var(--primary);
+  color: var(--background);
+  font-weight: 700;
+}
+.md img {
+  border: 1px solid var(--text);
+  height: auto;
+  max-width: 100%;
+}
