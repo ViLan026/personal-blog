@@ -24,7 +24,7 @@ export function ProfilePhoto({
       {/* Offset outline frame: a border only, no shadow and no extra colour. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 translate-x-3 translate-y-3 border-2 border-ink"
+        className="absolute inset-0"
       />
       <div className="relative aspect-[4/5] w-full overflow-hidden border-2 border-primary bg-background">
         {failed ? (

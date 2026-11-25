@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { MainNavigation } from "@/components/layout/MainNavigation";
+// import { MainNavigation } from "@/components/layout/MainNavigation";
 import { profile } from "@/config/profile";
-import { siteConfig } from "@/config/site";
+// import { siteConfig } from "@/config/site";
 
 export function Header() {
   return (
@@ -13,7 +13,7 @@ export function Header() {
         >
           {profile.name}
         </Link>
-        <MainNavigation items={siteConfig.nav} />
+        {/* <MainNavigation items={siteConfig.nav} /> */}
       </div>
     </header>
   );
